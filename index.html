@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rustic Agentic — WordPress &amp; Hosting Help, Fast</title>
+<meta name="description" content="Emergency WordPress fixes, hosting migrations, speed tune-ups, and clean builds — from a developer who spent years inside the hosting world at Endurance International (Bluehost, HostGator). Flat quotes, fast turnaround." />
+<style>
+  :root{
+    --ink:#0f172a; --ink2:#1e293b; --muted:#64748b; --line:#e2e8f0;
+    --accent:#10b981; --accent2:#0ea5e9; --bg:#ffffff; --soft:#f8fafc;
+    --radius:14px; --shadow:0 10px 30px rgba(2,6,23,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .btn{display:inline-block;padding:14px 26px;border-radius:999px;font-weight:600;font-size:16px;
+    transition:transform .12s ease,box-shadow .12s ease;cursor:pointer}
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 8px 20px rgba(16,185,129,.35)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(16,185,129,.45)}
+  .btn-ghost{border:1.5px solid rgba(255,255,255,.35);color:#fff}
+  .btn-ghost:hover{border-color:#fff}
+
+  /* HERO */
+  header.hero{background:radial-gradient(1200px 500px at 80% -10%,rgba(14,165,233,.25),transparent),
+    linear-gradient(160deg,#0b1220 0%,#111c33 55%,#0f172a 100%);color:#e7eef7;padding:0 0 80px}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:26px 0}
+  .brand{font-weight:800;font-size:20px;letter-spacing:.3px;color:#fff}
+  .brand span{color:var(--accent)}
+  .nav a.navlink{color:#b9c6d8;font-weight:500;margin-left:22px;font-size:15px}
+  .nav a.navlink:hover{color:#fff}
+  .hero-inner{padding-top:46px;max-width:760px}
+  .pill{display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,.14);
+    border:1px solid rgba(16,185,129,.35);color:#7ff0c4;padding:6px 14px;border-radius:999px;
+    font-size:13px;font-weight:600;margin-bottom:22px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(16,185,129,.25)}
+  h1{font-size:clamp(34px,5.2vw,54px);line-height:1.1;letter-spacing:-.5px;color:#fff;margin-bottom:18px}
+  h1 em{font-style:normal;color:var(--accent)}
+  .sub{font-size:clamp(17px,2.2vw,20px);color:#c3d0e2;max-width:640px;margin-bottom:32px}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .trustbar{margin-top:46px;display:flex;flex-wrap:wrap;gap:10px 26px;color:#8aa0bd;font-size:14px;
+    font-weight:600;letter-spacing:.3px;border-top:1px solid rgba(255,255,255,.08);padding-top:24px}
+  .trustbar b{color:#cdd9ea}
+
+  /* SECTIONS */
+  section{padding:84px 0}
+  .eyebrow{color:var(--accent);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;font-size:13px}
+  h2{font-size:clamp(26px,3.6vw,38px);letter-spacing:-.4px;margin:10px 0 14px}
+  .lead{color:var(--muted);font-size:18px;max-width:620px}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:42px}
+  .card{background:var(--soft);border:1px solid var(--line);border-radius:var(--radius);padding:26px;
+    transition:transform .12s ease,box-shadow .12s ease}
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .card .ic{font-size:26px}
+  .card h3{font-size:19px;margin:14px 0 8px}
+  .card p{color:var(--muted);font-size:15px;margin-bottom:14px}
+  .price{font-weight:700;color:var(--ink);font-size:15px}
+  .price small{color:var(--muted);font-weight:500}
+
+  /* WHY */
+  .why{background:var(--soft)}
+  .why-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center}
+  .why ul{list-style:none;margin-top:24px}
+  .why li{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .why li:last-child{border-bottom:0}
+  .check{color:var(--accent);font-weight:800;font-size:18px;flex-shrink:0}
+  .why li b{display:block;margin-bottom:2px}
+  .why li span{color:var(--muted);font-size:15px}
+  .stat-card{background:linear-gradient(160deg,#0f172a,#1e293b);color:#e7eef7;border-radius:18px;padding:34px;
+    box-shadow:var(--shadow)}
+  .stat-card .big{font-size:40px;font-weight:800;color:var(--accent);line-height:1}
+  .stat-card .lbl{color:#aebbce;margin:6px 0 22px}
+  .stat-card hr{border:0;border-top:1px solid rgba(255,255,255,.1);margin:18px 0}
+
+  /* STEPS */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:42px;counter-reset:s}
+  .step{position:relative;padding-top:8px}
+  .step .n{width:42px;height:42px;border-radius:12px;background:var(--ink);color:#fff;display:grid;
+    place-items:center;font-weight:800;margin-bottom:16px}
+  .step h3{font-size:18px;margin-bottom:6px}
+  .step p{color:var(--muted);font-size:15px}
+
+  /* CONTACT */
+  .contact{background:radial-gradient(900px 400px at 50% 120%,rgba(16,185,129,.2),transparent),
+    linear-gradient(160deg,#0b1220,#111c33);color:#e7eef7;text-align:center}
+  .contact h2{color:#fff}
+  .contact p{color:#c3d0e2;font-size:18px;max-width:560px;margin:12px auto 30px}
+  .mail{font-size:clamp(18px,3vw,26px);font-weight:700;color:#fff;display:inline-block;margin-top:8px}
+  .mail:hover{color:var(--accent)}
+
+  footer{background:#0b1220;color:#7d8da6;text-align:center;padding:30px 0;font-size:14px}
+  footer b{color:#cdd9ea}
+
+  @media(max-width:840px){
+    .grid,.steps{grid-template-columns:1fr 1fr}
+    .why-grid{grid-template-columns:1fr;gap:28px}
+    .nav a.navlink{display:none}
+  }
+  @media(max-width:560px){ .grid,.steps{grid-template-columns:1fr} section{padding:60px 0} }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <nav class="nav">
+      <div class="brand">Rustic<span>Agentic</span></div>
+      <div>
+        <a class="navlink" href="#services">Services</a>
+        <a class="navlink" href="#why">Why me</a>
+        <a class="navlink" href="#how">How it works</a>
+        <a class="navlink" href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <div class="hero-inner">
+      <span class="pill"><span class="dot"></span> Available now · taking new projects this week</span>
+      <h1>WordPress problems,<br><em>solved fast.</em></h1>
+      <p class="sub">Emergency fixes, hosting migrations, speed tune-ups, and clean builds — from a developer
+        who spent years inside the hosting world at Endurance International (Bluehost · HostGator). Flat
+        quotes. Fast turnaround. You work directly with me, not an agency.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#contact">Get a fast quote</a>
+        <a class="btn btn-ghost" href="#services">See what I do</a>
+      </div>
+      <div class="trustbar">
+        <span><b>Ex-Endurance Intl</b> concierge dev</span>
+        <span><b>WordPress</b> &amp; WooCommerce</span>
+        <span><b>Hosting</b> &amp; migrations</span>
+        <span><b>Security</b> &amp; performance</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="services">
+  <div class="wrap">
+    <div class="eyebrow">Services</div>
+    <h2>What I can fix or build for you</h2>
+    <p class="lead">Clear scope, flat pricing, no hourly surprises. Most fixes and migrations done in 24–72 hours.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="ic">🚑</div>
+        <h3>Emergency Site Rescue</h3>
+        <p>Hacked, white screen, broken after an update, or just won't load? I diagnose it and get you back online.</p>
+        <div class="price">from $150 <small>· flat</small></div>
+      </div>
+      <div class="card">
+        <div class="ic">📦</div>
+        <h3>Hosting Migration</h3>
+        <p>Move your WordPress site to faster, cheaper hosting — zero downtime, nothing lost. My old specialty.</p>
+        <div class="price">from $250 <small>· flat</small></div>
+      </div>
+      <div class="card">
+        <div class="ic">⚡</div>
+        <h3>Speed &amp; Core Web Vitals</h3>
+        <p>A slow site costs you visitors and Google rank. I get your load times down and your scores green.</p>
+        <div class="price">from $300 <small>· flat</small></div>
+      </div>
+      <div class="card">
+        <div class="ic">🧱</div>
+        <h3>WordPress Builds</h3>
+        <p>Clean, fast, mobile-ready sites for small businesses — built to load quickly and be easy to update.</p>
+        <div class="price">from $900</div>
+      </div>
+      <div class="card">
+        <div class="ic">🛒</div>
+        <h3>WooCommerce Help</h3>
+        <p>Store setup, broken checkout, payment &amp; shipping fixes — get your shop actually taking orders.</p>
+        <div class="price">from $300</div>
+      </div>
+      <div class="card">
+        <div class="ic">🛡️</div>
+        <h3>Care Plans</h3>
+        <p>Updates, backups, security hardening, and a real human on call when something goes sideways.</p>
+        <div class="price">from $60 <small>/ month</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why" class="why">
+  <div class="wrap why-grid">
+    <div>
+      <div class="eyebrow">Why work with me</div>
+      <h2>I've been inside the machine</h2>
+      <p class="lead">Most "WordPress people" learned on YouTube. I learned supporting real sites on real hosting,
+        at scale — so I know where things actually break.</p>
+      <ul>
+        <li><span class="check">✓</span><div><b>Former Endurance International concierge developer</b>
+          <span>Years supporting WordPress on Bluehost / HostGator hosting — cPanel, migrations, and the weird edge cases most freelancers never see.</span></div></li>
+        <li><span class="check">✓</span><div><b>Systems &amp; security engineer</b>
+          <span>I build secure, high-performance infrastructure for a living — so on your site, security and speed aren't afterthoughts.</span></div></li>
+        <li><span class="check">✓</span><div><b>Flat quotes, plain English, fast</b>
+          <span>You approve a fixed price before I start, you get updates you can understand, and you deal with me directly — no account managers.</span></div></li>
+      </ul>
+    </div>
+    <div class="stat-card">
+      <div class="big">24–72h</div>
+      <div class="lbl">typical turnaround on fixes &amp; migrations</div>
+      <hr>
+      <div class="big">$0</div>
+      <div class="lbl">surprise hourly charges — every job is flat-quoted up front</div>
+      <hr>
+      <div class="big">1:1</div>
+      <div class="lbl">you work directly with the developer, start to finish</div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="eyebrow">How it works</div>
+    <h2>Simple, and fast</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <h3>Tell me what's wrong</h3>
+        <p>Email a quick description of the problem (and your site link, if you have one). The more detail, the faster I quote.</p>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h3>Get a flat quote</h3>
+        <p>I reply with a fixed price and a turnaround time. No hourly meter, no surprises. You approve before I touch anything.</p>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h3>Fixed, fast</h3>
+        <p>I do the work, keep you posted in plain English, and confirm it's done. Most jobs wrap in a few days.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <div class="eyebrow">Get started</div>
+    <h2>Tell me what you need fixed</h2>
+    <p>Send a short note about your site and the problem. I read every message and reply fast — usually the same day.</p>
+    <a class="btn btn-primary" href="mailto:scottbaker@rusticagentic.agency?subject=WordPress%20help%20request&amp;body=Hi%20Scott%2C%0A%0AMy%20site%3A%20%0AThe%20problem%3A%20%0ATimeline%3A%20%0A">Email me your problem</a>
+    <div><a class="mail" href="mailto:scottbaker@rusticagentic.agency">scottbaker@rusticagentic.agency</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <b>Rustic Agentic</b> — WordPress &amp; hosting help · Built and run by Scott Baker · &copy; 2026
+  </div>
+</footer>
+
+</body>
+</html>
