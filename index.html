@@ -70,6 +70,10 @@
   .featured h3{font-size:22px;color:#fff;margin-bottom:10px}
   .featured p{color:#c3d0e2;font-size:16px;max-width:780px;margin-bottom:14px}
   .featured .price{color:#fff}.featured .price small{color:#9fb0c7;font-weight:500}
+  .featured a{color:#7ff0c4;font-weight:600}
+  .featured .verify{display:inline-block;margin-top:16px;font-size:14px;font-weight:700;color:#7ff0c4;
+    border:1px solid rgba(127,240,196,.4);padding:7px 14px;border-radius:999px;text-decoration:none}
+  .featured .verify:hover{border-color:#7ff0c4;background:rgba(16,185,129,.12)}
 
   /* WHY */
   .why{background:var(--soft)}
@@ -123,6 +127,7 @@
         <a class="navlink" href="#services">Services</a>
         <a class="navlink" href="#why">Why me</a>
         <a class="navlink" href="#how">How it works</a>
+        <a class="navlink" href="requirements.html">Before we start</a>
         <a class="navlink" href="resume.html">Résumé</a>
         <a class="navlink" href="#contact">Contact</a>
       </div>
@@ -195,18 +200,30 @@
     <div class="featured">
       <div class="tag">For bigger projects</div>
       <h3>☁️ AWS Cloud Architecture &amp; Builds</h3>
-      <p>Need infrastructure, not just a website? As an <b style="color:#fff">AWS Certified Solutions Architect</b>,
+      <p>Need infrastructure, not just a website? As an <a href="https://www.credly.com/badges/0957ca40-e7ba-4984-99b8-444e8de58a18/public_url" target="_blank" rel="noopener">AWS Certified Solutions Architect</a>,
         I design and build entire cloud environments — secure, scalable architecture, server setup, migrations,
         and deployment for businesses moving onto AWS. Full builds from the ground up, done right. You grant
         <b style="color:#fff">scoped, revocable access</b> — never root or shared passwords — and work with me
         directly, so you get agency-grade results without the agency markup.</p>
-      <div class="price">Project-based · typically $3k–$15k+ <small>· free scoping call</small></div>
+      <div class="price">Project-based · typically $3k–$15k+ <small>· send your requirements to review</small></div>
+      <a class="verify" href="https://www.credly.com/badges/0957ca40-e7ba-4984-99b8-444e8de58a18/public_url" target="_blank" rel="noopener">✓ Verify my AWS Solutions Architect cert ↗</a>
+    </div>
+    <div class="featured">
+      <div class="tag">Data projects</div>
+      <h3>📊 Data Engineering — Spark &amp; Databricks</h3>
+      <p>Data that needs moving, transforming, or processing at scale? As a
+        <a href="https://credentials.databricks.com/embed/96e65e17-56d5-4682-a8f4-c9e77b2a7251" target="_blank" rel="noopener">Databricks Certified Associate Developer for Apache Spark (Scala)</a>,
+        I build data pipelines, Spark jobs, and lakehouse setups — wired up through the Databricks API/SDK and
+        automated end to end. Scoped, revocable access; you work with me directly, no agency markup.</p>
+      <div class="price">Project-based · scope it by email <small>· send your requirements to review</small></div>
+      <a class="verify" href="https://credentials.databricks.com/embed/96e65e17-56d5-4682-a8f4-c9e77b2a7251" target="_blank" rel="noopener">✓ Verify my Databricks cert ↗</a>
     </div>
     <p style="margin-top:30px;color:var(--muted);font-size:14px;border-left:3px solid var(--accent);padding-left:16px;max-width:720px">
       <b style="color:var(--ink)">Good to know:</b> I handle the <b>technical</b> side — development, hosting, performance,
       and security. I don't provide graphic design, logos, or custom artwork of any kind; I work with clean
       placeholders or any images/branding you already have. I work entirely from my own machine — you grant the
-      access needed and revoke it when we're done; you never share root or personal passwords.</p>
+      access needed and revoke it when we're done; you never share root or personal passwords.
+      <a href="requirements.html" style="color:var(--accent);font-weight:700">See exactly what I need before we talk →</a></p>
   </div>
 </section>
 
@@ -247,18 +264,18 @@
     <div class="steps">
       <div class="step">
         <div class="n">1</div>
-        <h3>Tell me what's wrong</h3>
-        <p>Email a quick description of the problem (and your site link, if you have one). The more detail, the faster I quote.</p>
+        <h3>Send your requirements</h3>
+        <p>Email me your project details — what you need built or fixed (and a link if it's an existing site). I review everything in writing first.</p>
       </div>
       <div class="step">
         <div class="n">2</div>
-        <h3>Get a flat quote</h3>
-        <p>I reply with a fixed price and a turnaround time. No hourly meter, no surprises. You approve before I touch anything.</p>
+        <h3>I review &amp; quote</h3>
+        <p>I go over your requirements and reply with a flat price and a plan. If a call makes sense, we book it <em>after</em> I've reviewed — never a cold call.</p>
       </div>
       <div class="step">
         <div class="n">3</div>
-        <h3>Fixed, fast</h3>
-        <p>I do the work, keep you posted in plain English, and confirm it's done. Most jobs wrap in a few days.</p>
+        <h3>Approve &amp; I build</h3>
+        <p>You approve the fixed quote, I do the work and keep you posted in plain English, and confirm when it's done.</p>
       </div>
     </div>
   </div>
@@ -267,9 +284,9 @@
 <section id="contact" class="contact">
   <div class="wrap">
     <div class="eyebrow">Get started</div>
-    <h2>Tell me what you need fixed</h2>
-    <p>Send a short note about your site and the problem. I read every message and reply fast — usually the same day.</p>
-    <a class="btn btn-primary" href="mailto:scottbaker@rusticagentic.agency?subject=WordPress%20help%20request&amp;body=Hi%20Scott%2C%0A%0AMy%20site%3A%20%0AThe%20problem%3A%20%0ATimeline%3A%20%0A">Email me your problem</a>
+    <h2>Send me your project requirements</h2>
+    <p>Email your project details or the problem you need solved — in writing. I review every request and reply fast, usually the same day. Any call comes <b>after</b> I've reviewed your requirements, never before.</p>
+    <a class="btn btn-primary" href="mailto:scottbaker@rusticagentic.agency?subject=Project%20inquiry&amp;body=Hi%20Scott%2C%0A%0AProject%20%2F%20what%20I%20need%3A%20%0ARequirements%20%2F%20details%3A%20%0ATimeline%3A%20%0ACurrent%20site%20(if%20any)%3A%20%0A">Email me your requirements</a>
     <div><a class="mail" href="mailto:scottbaker@rusticagentic.agency">scottbaker@rusticagentic.agency</a></div>
   </div>
 </section>
