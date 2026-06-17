@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Statement of Work — Human + AI Operating System (Sample)</title>
+<style>
+  :root{--ink:#0f172a;--muted:#475569;--line:#cbd5e1;--accent:#0f766e;--soft:#f1f5f9;--amber:#92400e;--amberbg:#fef3c7;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);line-height:1.45;padding:38px 40px;max-width:900px;margin:0 auto;font-size:13px}
+  h1{font-size:23px;letter-spacing:-.3px}
+  .sub{color:var(--muted);margin:3px 0 4px;font-size:13px}
+  .sample{display:inline-block;background:var(--amberbg);color:var(--amber);font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 9px;border-radius:6px;margin-bottom:12px}
+  h2{font-size:13.5px;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin:16px 0 6px;border-bottom:2px solid var(--line);padding-bottom:4px}
+  table{width:100%;border-collapse:collapse;margin:4px 0}
+  td{vertical-align:top;padding:4px 8px;border-bottom:1px solid var(--line)}
+  td:first-child{font-weight:700;width:24%;color:var(--ink)}
+  ul{margin:3px 0 3px 18px}li{margin:2px 0}
+  .grid{display:flex;gap:14px}.grid>div{flex:1}
+  .phase{border-left:3px solid var(--accent);padding:3px 0 3px 12px;margin:6px 0}
+  .phase b{display:block;font-size:12.5px}
+  .phase span{color:var(--muted)}
+  .pill{display:inline-block;background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 7px;font-size:11px;margin-left:6px;color:var(--muted)}
+  .terms td:first-child{width:30%}
+  footer{margin-top:18px;color:var(--muted);font-size:11px;border-top:1px solid var(--line);padding-top:8px}
+  .sig{display:flex;gap:30px;margin-top:14px}
+  .sig>div{flex:1;border-top:1px solid var(--ink);padding-top:4px;font-size:11px;color:var(--muted)}
+</style>
+</head>
+<body>
+  <span class="sample">Sample / template — sanitized · illustrative pricing</span>
+  <h1>Statement of Work</h1>
+  <div class="sub"><b>Engagement:</b> Human + AI Operating System — Discovery, Solution Design &amp; Pilot</div>
+  <div class="sub"><b>Provider:</b> Rustic Agentic (Scott Baker) &nbsp;·&nbsp; <b>Client:</b> [Client] (regional specialty-services firm, anonymized) &nbsp;·&nbsp; <b>Date:</b> [DATE] &nbsp;·&nbsp; <b>SOW #:</b> [001]</div>
+
+  <h2>1 · Objective &amp; Background</h2>
+  <table>
+    <tr><td>Problem</td><td>The operations team spends ~30% of capacity on repetitive triage, lookup, and drafting across email, a CRM, and document stores. Knowledge lives in people's heads; turnaround and decision quality vary by who is on shift.</td></tr>
+    <tr><td>Objective</td><td>Design and pilot a governed <b>Human + AI operating model</b> that cuts time-to-response and standardizes decision quality — <b>without</b> sacrificing security, compliance, or human accountability.</td></tr>
+    <tr><td>Baseline to confirm</td><td>During discovery we will measure today's volume and time-per-step (e.g., <i>N requests/day × M minutes each</i>) so the pilot's results are provable against a real number, not a guess.</td></tr>
+  </table>
+
+  <h2>2 · Scope of Work</h2>
+  <div class="grid">
+    <div>
+      <b>In scope</b>
+      <ul>
+        <li>Current-state workflow mapping &amp; bottleneck analysis</li>
+        <li>Prioritized opportunity list (value × feasibility)</li>
+        <li>Solution blueprint + governance plan</li>
+        <li>Requirements with acceptance criteria</li>
+        <li>One pilot workflow, human-in-the-loop, measured vs. baseline</li>
+      </ul>
+    </div>
+    <div>
+      <b>Out of scope (this SOW)</b>
+      <ul>
+        <li>Production rollout beyond the single pilot workflow</li>
+        <li>Net-new integrations not named in requirements</li>
+        <li>Data migration / cleansing of source systems</li>
+        <li>24×7 operations or a managed care plan (separate SOW)</li>
+        <li>Model fine-tuning / custom model training</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>3 · Deliverables</h2>
+  <table>
+    <tr><td>D1 — Current-state map</td><td>Documented as-is workflow, handoffs, swivel-chair steps, and the quantified bottleneck (volume + time).</td></tr>
+    <tr><td>D2 — Opportunity list</td><td>Prioritized automation opportunities scored by value and feasibility; the recommended pilot.</td></tr>
+    <tr><td>D3 — Solution blueprint</td><td>Future-state Human + AI operating model: what AI handles vs. where a human stays in the loop, plus the reference architecture.</td></tr>
+    <tr><td>D4 — Governance plan</td><td>Access model (scoped/revocable), data handling/residency, audit/logging, and approval gates by risk class.</td></tr>
+    <tr><td>D5 — Requirements</td><td>Functional requirements each with an explicit <b>acceptance criterion</b> (the spec is the eval).</td></tr>
+    <tr><td>D6 — Pilot + readout</td><td>One workflow built and run with a human in the loop; measured against D1 baseline with a go/no-go recommendation.</td></tr>
+  </table>
+
+  <h2>4 · Approach &amp; Timeline</h2>
+  <div class="phase"><b>Phase 1 — Discovery &amp; Design <span class="pill">~1–2 weeks</span></b><span>D1–D5. Stakeholder interviews, current-state map, blueprint, governance plan, requirements. Gate: signed-off requirements before any build.</span></div>
+  <div class="phase"><b>Phase 2 — Pilot <span class="pill">~2–4 weeks</span></b><span>D6. Build one high-value workflow, human-in-the-loop, measured against baseline. Gate: go/no-go on the agreed success metrics.</span></div>
+  <div class="phase"><b>Phase 3 — Harden &amp; Expand <span class="pill">future SOW</span></b><span>Add guardrails/evals, codify reusable methods, extend to adjacent workflows. Scoped separately once the pilot proves out.</span></div>
+
+  <h2>5 · Acceptance Criteria</h2>
+  <ul>
+    <li>Each deliverable is accepted when it meets the criteria defined in D5 and is reviewed with the Client sponsor.</li>
+    <li><b>Pilot success (illustrative, set with Client in Phase 1):</b> ↓ median response time ≥ 40% on the pilot workflow · 100% of AI-assisted decisions logged &amp; reviewable · zero unapproved data egress.</li>
+    <li>Client has <b>5 business days</b> to review each deliverable; silence past that = accepted.</li>
+  </ul>
+
+  <h2>6 · Commercial Terms</h2>
+  <table class="terms">
+    <tr><td>Rate / structure</td><td><b>$95 / hour</b>, time &amp; materials, invoiced bi-weekly &nbsp;—&nbsp; <i>or</i> &nbsp;fixed-fee per phase on a written estimate. <span class="pill">illustrative</span></td></tr>
+    <tr><td>Estimated effort</td><td>Phase 1: [__] hrs · Phase 2: [__] hrs (estimate confirmed before each phase starts; no surprise overages without written approval).</td></tr>
+    <tr><td>Payment terms</td><td>Net-15 from invoice date. Phase 1 may begin on a deposit per separate agreement.</td></tr>
+    <tr><td>Change control</td><td>Scope changes are handled by a written change order (effort + cost) before work proceeds.</td></tr>
+  </table>
+
+  <h2>7 · Access, Security &amp; Assumptions</h2>
+  <ul>
+    <li><b>Scoped, revocable access only.</b> Client provisions a least-privilege, Client-owned service account / IAM user the Client can revoke at any time — <b>never a root/owner login.</b> Full scope is agreed in writing before work begins.</li>
+    <li><b>Data stays in the Client's perimeter</b> (their cloud account/VPC); no proprietary data trains a public model; PII/PHI handling and residency defined in D4.</li>
+    <li><b>Human accountability:</b> AI never finalizes a high-stakes or customer-facing action — approval gates by risk class.</li>
+    <li><b>Assumptions:</b> Client provides timely access to named stakeholders, sample data, and the systems in scope. Delays in access shift the timeline, not the scope.</li>
+  </ul>
+
+  <div class="sig">
+    <div>Client — authorized signature / date</div>
+    <div>Rustic Agentic — Scott Baker / date</div>
+  </div>
+
+  <footer>Sanitized sample Statement of Work prepared to illustrate scoping and engagement structure. Bracketed fields, pricing, and metrics are placeholders set with the actual client during discovery; client identity and specifics removed. Not an offer or a binding agreement.</footer>
+</body>
+</html>

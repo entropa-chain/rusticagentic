@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>RusticAgentic — RAG Benchmark</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">RusticAgentic — RAG Benchmark</h1>
+</header>
+<h1 id="gcp-c2-standard-30-benchmark-results">GCP c2-standard-30
+Benchmark Results</h1>
+<h2 id="rusticagentic-20-query-legal-corpus-benchmark">RusticAgentic —
+20-Query Legal Corpus Benchmark</h2>
+<h3 id="node-configuration">Node Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instance</td>
+<td>GCP <code>c2-standard-30</code></td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>30 vCPU (28 threads allocated) / 120 GB RAM</td>
+</tr>
+<tr>
+<td>GPU</td>
+<td>None — CPU-only inference (OpenBLAS)</td>
+</tr>
+<tr>
+<td>LLM</td>
+<td>Qwen2.5-14B Q4_K_M (split GGUF, 3 parts)</td>
+</tr>
+<tr>
+<td>Embedding</td>
+<td>gte-large-en-v1.5 (ONNX Runtime, CPU EP)</td>
+</tr>
+<tr>
+<td>Documents</td>
+<td>150 legal docs · ~3,029 indexed chunks</td>
+</tr>
+<tr>
+<td>Stack</td>
+<td>ra-gateway + llama-server + ra-watch (Ubuntu 24.04 LTS)</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>2026-04-14</td>
+</tr>
+</tbody>
+</table>
+<h3 id="summary-statistics">Summary Statistics</h3>
+<table>
+<colgroup>
+<col style="width: 53%" />
+<col style="width: 46%" />
+</colgroup>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Queries run</td>
+<td>20</td>
+</tr>
+<tr>
+<td>Min latency</td>
+<td>27.7s</td>
+</tr>
+<tr>
+<td>Max latency</td>
+<td>119.3s</td>
+</tr>
+<tr>
+<td><strong>Average latency</strong></td>
+<td><strong>64.3s</strong></td>
+</tr>
+<tr>
+<td>Total elapsed</td>
+<td>1286s (~21 min)</td>
+</tr>
+<tr>
+<td>Successful answers</td>
+<td>18/20 (Q35 and Q41 returned insufficient context)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> All latency is dominated by CPU LLM generation
+(~95% of each query time). Embedding + retrieval are sub-second. This is
+the CPU baseline. Estimated A100 80GB equivalent with Mistral Large 2
+(full GPU offload): ~3–8s per query.</p>
+</blockquote>
+<hr />
+<h2 id="q1-101.6s">Q1 — 101.6s</h2>
+<p><strong>Query:</strong> Which NDAs contain automatic renewal clauses?
+List each one with the renewal notice period required.</p>
+<p><strong>Answer:</strong></p>
+<p>The NDAs that have automatic renewal clauses are as follows:</p>
+<ol type="1">
+<li><p><strong>Halcyon Data Systems Corp and Cascade Renewable Energy
+Corp (2025-03-08)</strong>: This Agreement automatically renews for
+successive one (1) year terms unless either Party provides the other
+with written notice of non-renewal not less than 45 days prior to the
+expiration of the then-current term.</p></li>
+<li><p><strong>Highpoint Media Corp and Quantum Analytics Inc
+(2021-02-23)</strong>: This Agreement automatically renews for
+successive one (1) year terms unless either Party provides the other
+with written notice of non-renewal not less than 30 days prior to the
+expiration of the then-current term.</p></li>
+<li><p><strong>Summit Technology Solutions Inc and Apex Manufacturing Co
+(2023-02-12)</strong>: This Agreement automatically renews for
+successive one (1) year terms unless either Party provides the other
+with written notice of non-renewal not less than 90 days prior to the
+expiration of the then-current term.</p></li>
+<li><p><strong>Nexus Biotech Inc and Quantum Analytics Inc
+(2021-04-01)</strong>: This Agreement automatically renews for
+successive one (1) year terms unless either Party provides the other
+with written notice of non-renewal not less than 45 days prior to the
+expiration of the then-current term.</p></li>
+<li><p><strong>Nexus Biotech Inc and Redwood Software Group Inc
+(2025-12-12)</strong>: This Agreement automatically renews for
+successive one (1) year terms unless either Party provides the other
+with written notice of non-renewal not less than 30 days prior to the
+expiration of the then-current term.</p></li>
+<li><p><strong>Halcyon Data Systems Corp and Atlas Investment Partners
+LP (2025-08-06)</strong>: This Agreement automatically renews for
+successive one (1) year terms unless either Party provides the other
+with written notice of non-renewal not less than 45 days prior to the
+expiration of the then-current term.</p></li>
+<li><p><strong>Nexus Biotech Inc and Arbor Health Network LLC
+(2023-10-16)</strong>: This Agreement automatically renews for
+successive one (1) year terms unless either Party provides the other
+with written notice of non-renewal not less than 30 days prior to the
+expiration of the then-current term.</p></li>
+<li><p><strong>Vertex Capital Partners LLC and Highpoint Media Corp
+(2020-10-11)</strong>: This Agreement automatically renews for
+successive one (1) year terms unless either Party provides the other
+with written notice of non-renewal not less than 45 days prior to the
+expiration of the then-current term.</p></li>
+</ol>
+<p><strong>Sources (8):</strong> -
+<code>NDA_Halcyon_Data_Systems_Corp_and_Cascade_Renewable_Energy_Corp_2025-03-08.txt</code>
+(rank 1, score 0.803) -
+<code>NDA_Highpoint_Media_Corp_and_Quantum_Analytics_Inc_2021-02-23.txt</code>
+(rank 2, score 0.802) -
+<code>NDA_Summit_Technology_Solutions_Inc_and_Apex_Manufacturing_Co_2023-02-12.txt</code>
+(rank 3, score 0.798) -
+<code>NDA_Nexus_Biotech_Inc_and_Quantum_Analytics_Inc_2021-04-01.txt</code>
+(rank 4, score 0.797) -
+<code>NDA_Nexus_Biotech_Inc_and_Redwood_Software_Group_Inc_2025-12-12.txt</code>
+(rank 5, score 0.793) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q2-53.4s">Q2 — 53.4s</h2>
+<p><strong>Query:</strong> Which NDAs are governed by New York law?</p>
+<p><strong>Answer:</strong></p>
+<p>The NDAs governed by New York law include the following
+agreements:</p>
+<ol type="1">
+<li><strong>Highpoint Media Corp and Quantum Analytics Inc</strong>
+(2021-02-23)</li>
+<li><strong>NovaBridge Solutions Inc and Nexus Biotech Inc</strong>
+(2022-10-26)</li>
+<li><strong>Halcyon Data Systems Corp and Cascade Renewable Energy
+Corp</strong> (2023-07-16)</li>
+<li><strong>BlueStar Aerospace LLC and Highpoint Media Corp</strong>
+(2022-12-29)</li>
+</ol>
+<p>Each of these agreements specifies that they are governed by the laws
+of the State of New York, without regard to its conflict of laws
+principles.</p>
+<p><strong>Sources (8):</strong> -
+<code>NDA_Highpoint_Media_Corp_and_Quantum_Analytics_Inc_2021-02-23.txt</code>
+(rank 1, score 0.723) -
+<code>NDA_NovaBridge_Solutions_Inc_and_Nexus_Biotech_Inc_2022-10-26.txt</code>
+(rank 2, score 0.715) -
+<code>NDA_Halcyon_Data_Systems_Corp_and_Cascade_Renewable_Energy_Corp_2023-07-16.txt</code>
+(rank 3, score 0.715) -
+<code>NDA_BlueStar_Aerospace_LLC_and_Highpoint_Media_Corp_2022-12-29.txt</code>
+(rank 4, score 0.696) -
+<code>Engagement_Letter_Redwood_Mergers_and_Acquisitions__Sell_2023-08-21.txt</code>
+(rank 5, score 0.688) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q3-58.0s">Q3 — 58.0s</h2>
+<p><strong>Query:</strong> What non-solicitation provisions appear in
+the NDAs? Summarize the restricted activities and duration.</p>
+<p><strong>Answer:</strong></p>
+<p>The Non-Solicitation of Employees clauses are included in the
+following agreements:</p>
+<ol type="1">
+<li>Employment Agreement Rivera Priya Head of Business Development
+(2021-06-05)</li>
+<li>Employment Agreement Ferreira Ashley Managing Director
+(2020-03-01)</li>
+<li>Employment Agreement Nguyen Riley Head of Business Development
+(2020-10-07)</li>
+<li>Employment Agreement Ferreira Taylor Vice President of Sales
+(2025-11-11)</li>
+</ol>
+<p>The duration of the non-solicitation clause for employees varies. For
+the agreements listed above, the duration is:</p>
+<ul>
+<li>Eighteen (18) months following termination for the agreements of
+Rivera Priya, Ferreira Ashley, and Ferreira Taylor.</li>
+<li>Two (2) years following termination for the agreement of Nguyen
+Riley.</li>
+</ul>
+<p><strong>Sources (8):</strong> -
+<code>Employment_Agreement_Rivera_Priya_Head_of_Business_Development_2021-06-05.txt</code>
+(rank 1, score 0.750) -
+<code>Employment_Agreement_Ferreira_Ashley_Managing_Director_2020-03-01.txt</code>
+(rank 2, score 0.748) -
+<code>Employment_Agreement_Nguyen_Riley_Head_of_Business_Development_2020-10-07.txt</code>
+(rank 3, score 0.746) -
+<code>Employment_Agreement_Nguyen_Riley_Head_of_Business_Development_2020-10-07.txt</code>
+(rank 4, score 0.746) -
+<code>Employment_Agreement_Ferreira_Taylor_Vice_President_of_Sales_2025-11-11.txt</code>
+(rank 5, score 0.744) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q5-45.2s">Q5 — 45.2s</h2>
+<p><strong>Query:</strong> Which NDAs require return or destruction of
+confidential materials upon termination? What are the requirements?</p>
+<p><strong>Answer:</strong></p>
+<p>All of the NDAs listed in the source documents require the return or
+destruction of confidential materials upon termination of the agreement.
+However, none of the documents specify a deadline for the return or
+destruction of these materials. The requirement is immediate upon
+termination or upon written request by the Disclosing Party.</p>
+<p>Therefore, the answer to the deadline part of the question is: I
+don’t have enough information to answer that.</p>
+<p><strong>Sources (8):</strong> -
+<code>NDA_Summit_Technology_Solutions_Inc_and_Apex_Manufacturing_Co_2023-02-12.txt</code>
+(rank 1, score 0.806) -
+<code>NDA_NovaBridge_Solutions_Inc_and_Nexus_Biotech_Inc_2022-10-26.txt</code>
+(rank 2, score 0.800) -
+<code>NDA_BlueStar_Aerospace_LLC_and_Highpoint_Media_Corp_2022-12-29.txt</code>
+(rank 3, score 0.796) -
+<code>NDA_Sterling_Digital_Media_LLC_and_Clearwater_Capital_Management_LP_2022-06-14.txt</code>
+(rank 4, score 0.793) -
+<code>NDA_Solaris_Pharmaceutical_Inc_and_Orion_Healthcare_Systems_LLC_2023-04-17.txt</code>
+(rank 5, score 0.792) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q13-53.5s">Q13 — 53.5s</h2>
+<p><strong>Query:</strong> What are the severance terms in the
+employment agreements? Include amounts and conditions.</p>
+<p><strong>Answer:</strong></p>
+<p>Here is the list of severance obligations per employee, specifying
+the weeks of severance pay:</p>
+<ul>
+<li>Ashley Williams (Director of Operations): 16 weeks</li>
+<li>Daniel Kowalski (Chief Compliance Officer): 4 weeks</li>
+<li>Riley Nguyen (Head of Business Development): 4 weeks</li>
+<li>Ashley Ferreira (Managing Director): 4 weeks</li>
+<li>Priya Rivera (Head of Business Development): 16 weeks</li>
+<li>Derek Nakamura (Chief Compliance Officer): 4 weeks</li>
+<li>Samantha Chen (Director of Operations): 8 weeks</li>
+<li>Benjamin Kim (Chief Technology Officer): 26 weeks</li>
+</ul>
+<p><strong>Sources (8):</strong> -
+<code>Employment_Agreement_Williams_Ashley_Director_of_Operations_2020-06-05.txt</code>
+(rank 1, score 0.762) -
+<code>Employment_Agreement_Kowalski_Daniel_Chief_Compliance_Officer_2025-12-06.txt</code>
+(rank 2, score 0.745) -
+<code>Employment_Agreement_Nguyen_Riley_Head_of_Business_Development_2020-10-07.txt</code>
+(rank 3, score 0.741) -
+<code>Employment_Agreement_Ferreira_Ashley_Managing_Director_2020-03-01.txt</code>
+(rank 4, score 0.741) -
+<code>Employment_Agreement_Rivera_Priya_Head_of_Business_Development_2021-06-05.txt</code>
+(rank 5, score 0.740) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q14-80.3s">Q14 — 80.3s</h2>
+<p><strong>Query:</strong> Which employment agreements contain
+non-compete clauses? What are the geographic scope and duration?</p>
+<p><strong>Answer:</strong></p>
+<p>The employment agreements that include non-compete clauses are as
+follows:</p>
+<ol type="1">
+<li><strong>Chloe Ferreira (Senior Software Engineer)</strong>
+<ul>
+<li><strong>Duration:</strong> Twelve (12) months following the
+termination of employment for any reason.</li>
+<li><strong>Geographic Scope:</strong> Within the continental United
+States.</li>
+</ul></li>
+<li><strong>Kim Benjamin (Senior Software Engineer)</strong>
+<ul>
+<li><strong>Duration:</strong> Eighteen (18) months following the
+termination of employment for any reason.</li>
+<li><strong>Geographic Scope:</strong> Within the State of
+Illinois.</li>
+</ul></li>
+<li><strong>Taylor Ferreira (Managing Director)</strong>
+<ul>
+<li><strong>Duration:</strong> Six (6) months following the termination
+of employment for any reason.</li>
+<li><strong>Geographic Scope:</strong> Within any jurisdiction in which
+the Company has active clients.</li>
+</ul></li>
+</ol>
+<p><strong>Sources (8):</strong> -
+<code>Deposition_Marcus_Webb_1-23-cv-09045-VEC_2025-06-06.txt</code>
+(rank 1, score 0.756) -
+<code>Deposition_Thomas_Nguyen_1-22-cv-08891-PAE_2025-09-15.txt</code>
+(rank 2, score 0.754) -
+<code>Deposition_Marcus_Webb_2-23-cv-04517-JMB_2024-08-09.txt</code>
+(rank 3, score 0.752) -
+<code>Employment_Agreement_Ferreira_Chloe_Senior_Software_Engineer_2021-09-25.txt</code>
+(rank 4, score 0.751) -
+<code>Deposition_Sarah_Williams_3-22-cv-05678-RS_2025-03-07.txt</code>
+(rank 5, score 0.751) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q15-119.3s">Q15 — 119.3s</h2>
+<p><strong>Query:</strong> What are the highest base salaries mentioned
+across all employment agreements?</p>
+<p><strong>Answer:</strong></p>
+<p>The employees with the highest base salaries, listed from highest to
+lowest, are:</p>
+<ol type="1">
+<li>Ferreira Taylor (Vice President of Sales) with a base salary of
+$750,000.00</li>
+<li>Kim Benjamin (Chief Technology Officer) with a base salary of
+$380,000.00</li>
+<li>Williams Ashley (Director of Operations) with a base salary of
+$250,000.00</li>
+<li>Kim Jordan (Senior Vice President Strategy) with a base salary of
+$250,000.00</li>
+<li>Nakamura Morgan (Chief Financial Officer) with a base salary of
+$250,000.00</li>
+</ol>
+<p><strong>Sources (8):</strong> -
+<code>Employment_Agreement_Williams_Ashley_Director_of_Operations_2020-06-05.txt</code>
+(rank 1, score 0.671) -
+<code>Employment_Agreement_Kim_Benjamin_Chief_Technology_Officer_2020-09-06.txt</code>
+(rank 2, score 0.667) -
+<code>Employment_Agreement_Nguyen_Ashley_Senior_Vice_President_Strategy_2020-02-09.txt</code>
+(rank 3, score 0.666) -
+<code>Employment_Agreement_Ferreira_Chloe_Senior_Software_Engineer_2021-09-25.txt</code>
+(rank 4, score 0.661) -
+<code>Employment_Agreement_Kim_Jordan_Senior_Vice_President_Strategy_2020-06-20.txt</code>
+(rank 5, score 0.659) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q18-88.5s">Q18 — 88.5s</h2>
+<p><strong>Query:</strong> Which employment agreements specify
+termination for cause provisions? What constitutes cause?</p>
+<p><strong>Answer:</strong></p>
+<p>All of the employment agreements listed in the provided source
+documents include a for cause termination clause. The conduct specified
+as grounds for termination for cause includes:</p>
+<ul>
+<li>Material breach of the agreement</li>
+<li>Conviction of a felony</li>
+<li>Fraud</li>
+<li>Embezzlement</li>
+<li>Willful misconduct</li>
+<li>Willful failure to perform material duties after written notice</li>
+</ul>
+<p><strong>Sources (8):</strong> -
+<code>Employment_Agreement_Ferreira_Ashley_Managing_Director_2020-03-01.txt</code>
+(rank 1, score 0.765) -
+<code>Employment_Agreement_Rivera_Morgan_Senior_Data_Scientist_2023-12-22.txt</code>
+(rank 2, score 0.765) -
+<code>Employment_Agreement_Ferreira_Taylor_Managing_Director_2025-02-15.txt</code>
+(rank 3, score 0.765) -
+<code>Employment_Agreement_Ferreira_Taylor_Vice_President_of_Sales_2025-11-11.txt</code>
+(rank 4, score 0.765) -
+<code>Employment_Agreement_Nguyen_Riley_Head_of_Business_Development_2020-10-07.txt</code>
+(rank 5, score 0.764) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q27-108.2s">Q27 — 108.2s</h2>
+<p><strong>Query:</strong> Which settlement agreements provide for lump
+sum payments? What are the amounts?</p>
+<p><strong>Answer:</strong></p>
+<p>The settlement agreements that were paid as a lump sum rather than
+installments include:</p>
+<ol type="1">
+<li>Apex Manufacturing Co.’s settlement with Summit Technology Solutions
+Inc.</li>
+<li>Fortuna Financial Services LLC’s settlement with Orion Healthcare
+Systems LLC</li>
+<li>Summit Technology Solutions Inc.’s settlement with Vanguard
+Logistics Solutions Inc.</li>
+<li>Orion Healthcare Systems LLC’s settlement with Monarch Construction
+Group LLC</li>
+<li>Summit Technology Solutions Inc.’s settlement with BlueStar
+Aerospace LLC</li>
+<li>Atlas Investment Partners LP’s settlement with Vertex Capital
+Partners LLC</li>
+</ol>
+<p>These agreements all specify a single lump sum payment within thirty
+days of the Effective Date.</p>
+<p><strong>Sources (8):</strong> -
+<code>Settlement_Agreement_Apex_v_Summit_4-23-cv-01156-KAW_2023-06-25.txt</code>
+(rank 1, score 0.749) -
+<code>Settlement_Agreement_Fortuna_v_Orion_5-23-cv-04401-EJD_2022-11-15.txt</code>
+(rank 2, score 0.734) -
+<code>Settlement_Agreement_Sterling_v_Cascade_6-24-cv-00234-JDK_2022-06-22.txt</code>
+(rank 3, score 0.731) -
+<code>Settlement_Agreement_Summit_v_Vanguard_4-23-cv-01156-KAW_2021-09-16.txt</code>
+(rank 4, score 0.728) -
+<code>Settlement_Agreement_Orion_v_Monarch_1-22-cv-08891-PAE_2024-07-14.txt</code>
+(rank 5, score 0.728) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q33-73.2s">Q33 — 73.2s</h2>
+<p><strong>Query:</strong> What is the largest settlement amount in the
+corpus? Who are the parties?</p>
+<p><strong>Answer:</strong></p>
+<p>The largest settlement amount in the corpus is $5,000,000.00. This
+settlement is detailed in the document
+“Settlement_Agreement_Atlas_v_Vertex_5-23-cv-04401-EJD_2020-10-08.txt”.
+The case involves Atlas as the plaintiff and Vertex as the defendant. In
+consideration of the mutual releases set forth in the agreement, the
+defendant agrees to pay the plaintiff the total sum of $5,000,000.00
+(the “Settlement Amount”).</p>
+<p><strong>Sources (8):</strong> -
+<code>Settlement_Agreement_Atlas_v_Solaris_1-24-cv-00892-LTS_2020-04-21.txt</code>
+(rank 1, score 0.749) -
+<code>Settlement_Agreement_Solaris_v_Atlas_6-24-cv-00234-JDK_2020-10-25.txt</code>
+(rank 2, score 0.746) -
+<code>Settlement_Agreement_Apex_v_Monarch_1-23-cv-09045-VEC_2024-04-01.txt</code>
+(rank 3, score 0.738) -
+<code>Settlement_Agreement_Atlas_v_Solaris_1-24-cv-00892-LTS_2020-04-21.txt</code>
+(rank 4, score 0.735) -
+<code>Settlement_Agreement_Solaris_v_Atlas_6-24-cv-00234-JDK_2020-10-25.txt</code>
+(rank 5, score 0.733) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q35-35.7s">Q35 — 35.7s</h2>
+<p><strong>Query:</strong> Which settlement agreements require court
+approval?</p>
+<p><strong>Answer:</strong></p>
+<p>I don’t have enough information to answer that.</p>
+<p><strong>Sources (8):</strong> -
+<code>Settlement_Agreement_Orion_v_Monarch_1-22-cv-08891-PAE_2024-07-14.txt</code>
+(rank 1, score 0.660) -
+<code>Settlement_Agreement_Meridian_v_Vanguard_1-24-cv-01567-JSR_2022-10-30.txt</code>
+(rank 2, score 0.649) -
+<code>Settlement_Agreement_Summit_v_BlueStar_1-22-cv-08891-PAE_2024-04-17.txt</code>
+(rank 3, score 0.646) -
+<code>Settlement_Agreement_Pacific_v_Clearwater_5-23-cv-04401-EJD_2023-02-09.txt</code>
+(rank 4, score 0.643) -
+<code>Settlement_Agreement_Vertex_v_Apex_3-22-cv-05678-RS_2025-03-23.txt</code>
+(rank 5, score 0.642) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q39-60.2s">Q39 — 60.2s</h2>
+<p><strong>Query:</strong> What are the liability caps in the master
+service agreements?</p>
+<p><strong>Answer:</strong></p>
+<p>The MSAs with fixed aggregate liability caps and the exact dollar cap
+stated in Section 3.1 of each are:</p>
+<ol type="1">
+<li><strong>MSA_Highpoint_2023-05-20.txt</strong>
+<ul>
+<li><strong>Aggregate Liability Cap:</strong> $628,000.00</li>
+</ul></li>
+<li><strong>MSA_Pinnacle_2020-04-15.txt</strong>
+<ul>
+<li><strong>Aggregate Liability Cap:</strong> $334,000.00</li>
+</ul></li>
+<li><strong>MSA_Atlas_2024-11-20.txt</strong>
+<ul>
+<li><strong>Aggregate Liability Cap:</strong> $628,000.00</li>
+</ul></li>
+</ol>
+<p><strong>Sources (8):</strong> -
+<code>Deposition_Sophia_Grant_2-24-cv-03311-CAS_2021-10-10.txt</code>
+(rank 1, score 0.744) -
+<code>Deposition_Diane_Hoffman_2-22-cv-03345-SB_2024-11-29.txt</code>
+(rank 2, score 0.742) -
+<code>Deposition_James_Holloway_1-24-cv-01567-JSR_2023-08-11.txt</code>
+(rank 3, score 0.740) - <code>MSA_Highpoint_2023-05-20.txt</code> (rank
+4, score 0.725) - <code>MSA_Weil_2022-11-24.txt</code> (rank 5, score
+0.720) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q41-34.4s">Q41 — 34.4s</h2>
+<p><strong>Query:</strong> Which MSAs include IP indemnification
+provisions? Summarize the scope of indemnification.</p>
+<p><strong>Answer:</strong></p>
+<p>I don’t have enough information to answer that.</p>
+<p><strong>Sources (8):</strong> -
+<code>MSA_Skadden_2022-10-31.txt</code> (rank 1, score 0.700) -
+<code>MSA_Pinnacle_2020-04-15.txt</code> (rank 2, score 0.697) -
+<code>MSA_Nexus_2023-10-29.txt</code> (rank 3, score 0.695) -
+<code>MSA_Arbor_2025-03-18.txt</code> (rank 4, score 0.695) -
+<code>MSA_Arbor_2025-03-18.txt</code> (rank 5, score 0.694) - <em>(+3
+more)</em></p>
+<hr />
+<h2 id="q44-27.7s">Q44 — 27.7s</h2>
+<p><strong>Query:</strong> What notice periods are required to terminate
+a master service agreement?</p>
+<p><strong>Answer:</strong></p>
+<p>The MSAs provided all have a thirty (30) days written notice period
+for termination for convenience. Therefore, all MSAs listed have the
+shortest termination notice period of 30 days.</p>
+<p><strong>Sources (8):</strong> -
+<code>MSA_BlueStar_2022-09-11.txt</code> (rank 1, score 0.686) -
+<code>MSA_Skadden_2021-05-09.txt</code> (rank 2, score 0.677) -
+<code>MSA_Pinnacle_2020-04-15.txt</code> (rank 3, score 0.673) -
+<code>MSA_BlueStar_2022-09-11.txt</code> (rank 4, score 0.671) -
+<code>MSA_Skadden_2021-05-09.txt</code> (rank 5, score 0.671) - <em>(+3
+more)</em></p>
+<hr />
+<h2 id="q53-77.3s">Q53 — 77.3s</h2>
+<p><strong>Query:</strong> Provide a full summary of the IP assignment
+agreements in the corpus — parties, scope, and consideration.</p>
+<p><strong>Answer:</strong></p>
+<p>The provided source documents contain several IP assignment
+agreements, but they do not explicitly list all the assignments in a
+summarized form. However, based on the available information, we can
+infer the following assignments:</p>
+<ol type="1">
+<li><strong>Sterling to Clearwater</strong> (2021-08-19):
+<ul>
+<li>Sterling is the assignor.</li>
+<li>Clearwater is the assignee.</li>
+<li>The specific IP and application numbers are not detailed in the
+provided sources.</li>
+</ul></li>
+<li><strong>Arbor to Summit</strong> (2025-07-31):
+<ul>
+<li>Arbor is the assignor.</li>
+<li>Summit is the assignee.</li>
+<li>The specific IP and application numbers are not detailed in the
+provided sources, except for one specific IP:
+<ul>
+<li>Trademark registration for the mark “LitIQ”, U.S. Registration
+No. 5963789, together with all goodwill associated therewith.</li>
+</ul></li>
+</ul></li>
+<li><strong>Atlas to Summit</strong> (2024-08-06):
+<ul>
+<li>Atlas is the assignor.</li>
+<li>Summit is the assignee.</li>
+<li>The specific IP and application numbers are not detailed in the
+provided sources.</li>
+</ul></li>
+<li><strong>Sterling to Atlas</strong> (2020-10-07):
+<ul>
+<li>Sterling is the assignor.</li>
+<li>Atlas is the assignee.</li>
+<li>The specific IP and application numbers are not detailed in the
+provided sources.</li>
+</ul></li>
+<li><strong>Coastal to Clearwater</strong> (2024-12-08):
+<ul>
+<li>Coastal is the assignor.</li>
+<li>Clearwater is the assignee.</li>
+<li>The specific IP and application numbers are not detailed in the
+provided sources.</li>
+</ul></li>
+</ol>
+<p>The detailed IP and application numbers are only provided for the
+“LitIQ” trademark registration in the Arbor to Summit agreement (U.S.
+Registration No. 5963789).</p>
+<p>For a complete summary, more detailed information about the specific
+IP and application numbers would be required.</p>
+<p><strong>Sources (8):</strong> -
+<code>IP_Assignment_Sterling_to_Clearwater_2021-08-19.txt</code> (rank
+1, score 0.737) -
+<code>IP_Assignment_Arbor_to_Summit_2025-07-31.txt</code> (rank 2, score
+0.735) - <code>IP_Assignment_Atlas_to_Summit_2024-08-06.txt</code> (rank
+3, score 0.729) -
+<code>IP_Assignment_Sterling_to_Atlas_2020-10-07.txt</code> (rank 4,
+score 0.727) - <code>IP_Assignment_Arbor_to_Summit_2025-07-31.txt</code>
+(rank 5, score 0.725) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q63-58.1s">Q63 — 58.1s</h2>
+<p><strong>Query:</strong> What employment-related disputes appear in
+the deposition transcripts?</p>
+<p><strong>Answer:</strong></p>
+<p>The depositions listed involve employment disputes between former
+employees and their former employers. The witnesses are Sarah Williams,
+Nathan Price, Marcus Webb, and Thomas Nguyen. The nature of the dispute
+is not explicitly detailed in the provided depositions, but it can be
+inferred that the disputes involve non-compete clauses and the handling
+of confidential information upon leaving the company. The depositions
+are part of legal proceedings where the plaintiffs (former employees)
+are likely contesting the enforceability of non-compete clauses or other
+aspects of their employment agreements.</p>
+<p>Witnesses involved in the depositions: 1. Sarah Williams 2. Nathan
+Price 3. Marcus Webb 4. Thomas Nguyen</p>
+<p>The nature of the dispute is centered around the terms of their
+employment agreements, specifically regarding non-compete clauses and
+the handling of confidential information.</p>
+<p><strong>Sources (8):</strong> -
+<code>Deposition_Sarah_Williams_3-22-cv-05678-RS_2025-03-07.txt</code>
+(rank 1, score 0.690) -
+<code>Deposition_Sarah_Williams_3-22-cv-05678-RS_2025-03-07.txt</code>
+(rank 2, score 0.681) -
+<code>Deposition_Nathan_Price_1-24-cv-01567-JSR_2023-05-07.txt</code>
+(rank 3, score 0.681) -
+<code>Deposition_Marcus_Webb_1-23-cv-09045-VEC_2025-06-06.txt</code>
+(rank 4, score 0.677) -
+<code>Deposition_Marcus_Webb_2-23-cv-04517-JMB_2024-08-09.txt</code>
+(rank 5, score 0.676) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q79-68.7s">Q79 — 68.7s</h2>
+<p><strong>Query:</strong> What breach of contract claims appear in the
+demand letters?</p>
+<p><strong>Answer:</strong></p>
+<p>The demand letters that allege breach of contract are as follows:</p>
+<ol type="1">
+<li><strong>Demand Letter to Vanguard Logistics Solutions Inc.</strong>
+<ul>
+<li><strong>Demanding Party:</strong> Sterling Digital Media LLC</li>
+<li><strong>Respondent:</strong> Vanguard Logistics Solutions Inc.</li>
+<li><strong>Alleged Breach:</strong> Breach of Contract</li>
+</ul></li>
+<li><strong>Demand Letter to Atlas Investment Partners LP</strong>
+<ul>
+<li><strong>Demanding Party:</strong> Redwood Software Group Inc.</li>
+<li><strong>Respondent:</strong> Atlas Investment Partners LP</li>
+<li><strong>Alleged Breach:</strong> Breach of Contract</li>
+</ul></li>
+<li><strong>Demand Letter to Summit Technology Solutions Inc.</strong>
+<ul>
+<li><strong>Demanding Party:</strong> Redwood Software Group Inc.</li>
+<li><strong>Respondent:</strong> Summit Technology Solutions Inc.</li>
+<li><strong>Alleged Breach:</strong> Breach of Contract</li>
+</ul></li>
+<li><strong>Demand Letter to Coastal Financial Corp.</strong>
+<ul>
+<li><strong>Demanding Party:</strong> Solaris Pharmaceutical Inc.</li>
+<li><strong>Respondent:</strong> Coastal Financial Corp.</li>
+<li><strong>Alleged Breach:</strong> Breach of Contract</li>
+</ul></li>
+<li><strong>Demand Letter to Atlas Investment Partners LP</strong>
+<ul>
+<li><strong>Demanding Party:</strong> Atlas Investment Partners LP</li>
+<li><strong>Respondent:</strong> Redwood Software Group Inc.</li>
+<li><strong>Alleged Breach:</strong> Breach of Contract</li>
+</ul></li>
+</ol>
+<p><strong>Sources (8):</strong> -
+<code>Demand_Letter_Vanguard_2021-03-19.txt</code> (rank 1, score 0.767)
+- <code>Demand_Letter_Atlas_2025-11-05.txt</code> (rank 2, score 0.766)
+- <code>Demand_Letter_Summit_2020-11-26.txt</code> (rank 3, score 0.760)
+- <code>Demand_Letter_Coastal_2025-09-01.txt</code> (rank 4, score
+0.756) - <code>Demand_Letter_Sterling_2025-07-27.txt</code> (rank 5,
+score 0.737) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q84-37.4s">Q84 — 37.4s</h2>
+<p><strong>Query:</strong> What is the largest monetary demand in the
+demand letters? Who is demanding it and from whom?</p>
+<p><strong>Answer:</strong></p>
+<p>The largest dollar amount demanded across all demand letters is
+$250,000.00, as seen in the demand letter to Coastal Financial Corp. on
+September 01, 2025.</p>
+<p><strong>Sources (8):</strong> -
+<code>Demand_Letter_Vanguard_2021-03-19.txt</code> (rank 1, score 0.750)
+- <code>Demand_Letter_Sterling_2025-07-27.txt</code> (rank 2, score
+0.748) - <code>Demand_Letter_Sterling_2025-07-27.txt</code> (rank 3,
+score 0.741) - <code>Demand_Letter_Atlas_2025-11-05.txt</code> (rank 4,
+score 0.741) - <code>Demand_Letter_Summit_2020-11-26.txt</code> (rank 5,
+score 0.739) - <em>(+3 more)</em></p>
+<hr />
+<h2 id="q85-40.6s">Q85 — 40.6s</h2>
+<p><strong>Query:</strong> Which parties appear most frequently across
+all document types? List the top parties.</p>
+<p><strong>Answer:</strong></p>
+<p>Based on the provided source documents, the companies that appear
+most frequently across all document types as a party are:</p>
+<ul>
+<li>Redwood Software Group Inc.</li>
+<li>Solaris Pharmaceutical Inc.</li>
+</ul>
+<p>These companies appear in multiple Non-Disclosure Agreements (NDAs)
+with different parties. The other documents provided are Master Service
+Agreements (MSAs) and do not involve these companies.</p>
+<p><strong>Sources (15):</strong> -
+<code>NDA_Redwood_Software_Group_Inc_and_Solaris_Pharmaceutical_Inc_2025-12-01.txt</code>
+(rank 1, score 0.699) -
+<code>NDA_Summit_Technology_Solutions_Inc_and_Apex_Manufacturing_Co_2023-02-12.txt</code>
+(rank 2, score 0.696) -
+<code>NDA_NovaBridge_Solutions_Inc_and_Nexus_Biotech_Inc_2022-10-26.txt</code>
+(rank 3, score 0.694) -
+<code>NDA_Highpoint_Media_Corp_and_Quantum_Analytics_Inc_2021-02-23.txt</code>
+(rank 4, score 0.693) -
+<code>NDA_Nexus_Biotech_Inc_and_Redwood_Software_Group_Inc_2025-12-12.txt</code>
+(rank 5, score 0.691) - <em>(+10 more)</em></p>
+<hr />
+<h2 id="q88-64.3s">Q88 — 64.3s</h2>
+<p><strong>Query:</strong> Which documents reference New York law or New
+York jurisdiction?</p>
+<p><strong>Answer:</strong></p>
+<p>The documents that reference New York law as the governing law
+are:</p>
+<ol type="1">
+<li><strong>Engagement Letter</strong>
+<ul>
+<li>Parties: Redwood Mergers and Acquisitions (Seller)</li>
+<li>Effective Date: 2023-08-21</li>
+</ul></li>
+<li><strong>Master Services Agreement (MSA)</strong>
+<ul>
+<li>Parties: Atlas (not specified)</li>
+<li>Effective Date: 2021-06-01</li>
+</ul></li>
+<li><strong>Master Services Agreement (MSA)</strong>
+<ul>
+<li>Parties: Nexus (not specified)</li>
+<li>Effective Date: 2023-10-29</li>
+</ul></li>
+<li><strong>Non-Disclosure Agreement (NDA)</strong>
+<ul>
+<li>Parties: Halcyon Data Systems Corp and Cascade Renewable Energy
+Corp</li>
+<li>Effective Date: 2023-07-16</li>
+</ul></li>
+<li><strong>Employment Agreement</strong>
+<ul>
+<li>Parties: Jordan Okafor (Managing Director)</li>
+<li>Effective Date: 2022-10-13</li>
+</ul></li>
+<li><strong>Non-Disclosure Agreement (NDA)</strong>
+<ul>
+<li>Parties: Highpoint Media Corp and Quantum Analytics Inc</li>
+<li>Effective Date: 2021-02-23</li>
+</ul></li>
+<li><strong>Non-Disclosure Agreement (NDA)</strong>
+<ul>
+<li>Parties: NovaBridge Solutions Inc and Nexus Biotech Inc</li>
+<li>Effective Date: 2022-10-26</li>
+</ul></li>
+</ol>
+<p><strong>Sources (15):</strong> -
+<code>Engagement_Letter_Redwood_Mergers_and_Acquisitions__Sell_2023-08-21.txt</code>
+(rank 1, score 0.753) - <code>MSA_Atlas_2021-06-01.txt</code> (rank 2,
+score 0.718) - <code>MSA_Nexus_2023-10-29.txt</code> (rank 3, score
+0.705) -
+<code>NDA_Halcyon_Data_Systems_Corp_and_Cascade_Renewable_Energy_Corp_2023-07-16.txt</code>
+(rank 4, score 0.703) -
+<code>Employment_Agreement_Okafor_Jordan_Managing_Director_2022-10-13.txt</code>
+(rank 5, score 0.700) - <em>(+10 more)</em></p>
+<hr />
+</body>
+</html>
